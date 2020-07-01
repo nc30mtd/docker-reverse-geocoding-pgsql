@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  db:
+    container_name: postgre_container
+    image: mdillon/postgis
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+    - ./docker/db/data:/var/lib/postgresql/data
+    - ./docker/db/sql:/docker-entrypoint-initdb.d
+    ports:
+    - 5435:5432
+  
+  #nginx:
+  #  build: nginx
+  #  ports:
+  #    - 8080:80
+  #  volumes:
+  #    - ./html:/usr/share/nginx/html
+
+  python3env:
+    restart: always
+    build: .
+    container_name: 'python3env'
+    working_dir: '/root/'
+    tty: true
+    volumes:
+      - ./opt:/root/opt
+    ports:
+    - 9000:9000
